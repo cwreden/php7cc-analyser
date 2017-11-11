@@ -16,6 +16,7 @@ $data = json_decode($content, true);
 $warnings = 0;
 $errors = 0;
 foreach ($data['files'] AS $file) {
+    echo '.';
     if (isset($file['errors']) && count($file['errors']) > 0) {
         $errors += count($file['errors']);
     }
@@ -24,10 +25,18 @@ foreach ($data['files'] AS $file) {
     }
 }
 
-echo sprintf('Checked Files: %d' . PHP_EOL, $data['summary']['checkedFiles']);
-echo '----- RESULT -----' . PHP_EOL;
-echo sprintf('Found errors: %d' . PHP_EOL, $errors);
-echo sprintf('Found warnings: %d' . PHP_EOL, $warnings);
+echo PHP_EOL;
+echo PHP_EOL;
+
+echo sprintf(
+    '[Checked files: %d, Effected files: %d, Warnings: %d, Errors: %d]' . PHP_EOL,
+    $data['summary']['checkedFiles'],
+    count($data['files']),
+    $warnings,
+    $errors
+);
+
+echo PHP_EOL;
 
 if ($errors > 0) {
     echo 'There are php 7 incompatible statements!' . PHP_EOL;
