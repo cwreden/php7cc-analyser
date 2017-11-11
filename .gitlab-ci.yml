@@ -29,5 +29,5 @@ before_script:
 
 test:
   script:
-  - composer global require sstalle/php7cc
+  - composer.phar global require sstalle/php7cc
   - php PHP7ccParser
