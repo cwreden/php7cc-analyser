@@ -31,4 +31,4 @@ test:
   script:
   - ls
   - php composer.phar global require sstalle/php7cc
-  - php PHP7ccParser
+  - php php7ccParser.php testData.json
