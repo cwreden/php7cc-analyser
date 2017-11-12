@@ -11,6 +11,7 @@ class ParserTest extends TestCase
 {
     /**
      * @uses \cwreden\php7ccAnalyser\Scan
+     * @uses \cwreden\php7ccAnalyser\ScanResultFile
      */
     public function testAnalysePhp7CcResult()
     {

@@ -4,6 +4,9 @@ namespace cwreden\php7ccAnalyser;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \cwreden\php7ccAnalyser\Summary
+ */
 class SummaryTest extends TestCase
 {
 

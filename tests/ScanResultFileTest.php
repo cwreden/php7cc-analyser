@@ -17,6 +17,9 @@ class ScanResultFileTest extends TestCase
         $this->assertInstanceOf(ScanResultFile::class, $scanResultFile);
     }
 
+    /**
+     * @uses \cwreden\php7ccAnalyser\ResultFileNotFoundException
+     */
     public function testCanNotBeConstructByNotExistingResultFile()
     {
         $this->expectException(ResultFileNotFoundException::class);

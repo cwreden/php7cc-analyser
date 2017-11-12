@@ -7,6 +7,8 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \cwreden\php7ccAnalyser\Scan
  * @uses \cwreden\php7ccAnalyser\Summary
+ * @uses \cwreden\php7ccAnalyser\ScannedFile
+ * @uses \cwreden\php7ccAnalyser\ScannedFileCollection
  */
 class ScanTest extends TestCase
 {
