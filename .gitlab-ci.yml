@@ -17,7 +17,7 @@ build:composer:
   stage: build
   script:
   - apt-get update -yqq
-  - apt-get install git -yqq
+  - apt-get install git zlib1g-dev -yqq
   - docker-php-ext-install zip
   - curl -sS https://getcomposer.org/installer | php
   - mv composer.phar /usr/local/bin/composer
