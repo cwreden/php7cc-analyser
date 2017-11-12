@@ -38,4 +38,11 @@ class ScannedFileCollectionTest extends TestCase
 
         $this->assertEquals(2, $scannedFileCollection->getTotal());
     }
+
+    public function testGetArrayIterator()
+    {
+        $scannedFileCollection = new ScannedFileCollection();
+
+        $this->assertInstanceOf(\ArrayIterator::class, $scannedFileCollection->getIterator());
+    }
 }

@@ -9,10 +9,39 @@ use PHPUnit\Framework\TestCase;
  */
 class ScannedFileTest extends TestCase
 {
+    /**
+     * @var ScannedFile
+     */
+    private $scannedFile;
 
-    public function test()
+    public function testGetFilePath()
     {
-        $scannedFile = new ScannedFile(
+        $this->assertEquals('/path/to/my/directory/myfile.php', $this->scannedFile->getPath());
+    }
+
+    public function testGetTotalWarnings()
+    {
+        $this->assertEquals(1, $this->scannedFile->getTotalWarnings());
+    }
+
+    public function testGetTotalErrors()
+    {
+        $this->assertEquals(0, $this->scannedFile->getTotalErrors());
+    }
+
+    public function testGetWarnings()
+    {
+        $this->assertInternalType('array', $this->scannedFile->getWarnings());
+    }
+
+    public function testGetErrors()
+    {
+        $this->assertInternalType('array', $this->scannedFile->getErrors());
+    }
+
+    protected function setUp()
+    {
+        $this->scannedFile = new ScannedFile(
             '/path/to/my/directory/myfile.php',
             [
                 [
@@ -22,9 +51,11 @@ class ScannedFileTest extends TestCase
             ],
             []
         );
-
-        $this->assertEquals('/path/to/my/directory/myfile.php', $scannedFile->getPath());
-        $this->assertEquals(1, $scannedFile->getTotalWarnings());
-        $this->assertEquals(0, $scannedFile->getTotalErrors());
     }
+
+    protected function tearDown()
+    {
+        unset($this->scannedFile);
+    }
+
 }
