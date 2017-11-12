@@ -35,8 +35,6 @@ test:lint:
   image: php:7.1
   stage: test
   script:
-  - pecl install xdebug
-  - docker-php-ext-enable xdebug
   - php -l
   dependencies:
   - build:composer
@@ -45,6 +43,8 @@ test:phpunit:
   image: php:7.1
   stage: test
   script:
+  - pecl install xdebug
+  - docker-php-ext-enable xdebug
   - ./vendor/bin/phpunit
   artifacts:
     paths:
