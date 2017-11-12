@@ -19,7 +19,7 @@ final class ScanResultFile
     public function __construct(string $path)
     {
         if (!file_exists($path)) {
-            throw new ResultFileNotFoundException();
+            throw new ResultFileNotFoundException('php7cc result file not found.');
         }
         $this->path = $path;
     }
