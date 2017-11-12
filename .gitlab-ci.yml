@@ -1,34 +1,68 @@
-image: php:7.1
+image: docker:latest
 
-#cache:
-#  paths:
-#  - vendor/
+services:
+- docker:dind
 
-before_script:
-- apt-get update -yqq
-- apt-get install -yqq git libmcrypt-dev libpq-dev libcurl4-gnutls-dev libicu-dev libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev libldap2-dev unixodbc-dev libsqlite3-dev libaspell-dev libsnmp-dev libpcre3-dev libtidy-dev
-# Install PHP extensions
-- docker-php-ext-install mbstring mcrypt pdo_pgsql opcache curl gd xml json intl zip bz2
-# Install & enable Xdebug for code coverage reports
-#- pecl install xdebug
-#- docker-php-ext-enable xdebug
-# Install and run Composer
-- curl -sS https://getcomposer.org/installer | php
-#- php composer.phar install
+variables:
+  SONAR_SCANNER_VERSION: 3.0.3.778
 
-# Bring in any services we need http://docs.gitlab.com/ee/ci/docker/using_docker_images.html#what-is-a-service
-# See http://docs.gitlab.com/ce/ci/services/README.html for examples.
-#services:
-#  - mysql:5.7
+stages:
+  - build
+  - test
+  - analyse
+  - package
 
-# Set any variables we need
-#variables:
-  # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
-#  MYSQL_DATABASE: mysql_database
-#  MYSQL_ROOT_PASSWORD: mysql_strong_password
-
-test:
+build:composer:
+  image: php:7.1
+  stage: build
   script:
-  - ls
-  - php composer.phar global require sstalle/php7cc
-  - php php7ccParser.php testData.json
+  - apt-get update -yqq
+  - apt-get install git -yqq
+  - curl -sS https://getcomposer.org/installer | php
+  - mv composer.phar /usr/local/bin/composer
+  - composer install -o
+  artifacts:
+    paths:
+    - vendor/
+    expire_in: 1 hour
+  cache:
+    paths:
+    - vendor/
+
+
+test:lint:
+  image: php:7.1
+  stage: test
+  script:
+  - pecl install xdebug
+  - docker-php-ext-enable xdebug
+  - php -l
+  dependencies:
+  - build:composer
+
+test:phpunit:
+  image: php:7.1
+  stage: test
+  script:
+  - ./vendor/bin/phpunit
+  artifacts:
+    paths:
+    - build/coverage/
+    expire_in: 1 hour
+  dependencies:
+  - build:composer
+
+
+analyse:sonarqube:
+  image: java:openjdk-8u111-jre
+  stage: analyse
+  script:
+  - wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
+  - unzip sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
+  - rm sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
+  - mv sonar-scanner-$SONAR_SCANNER_VERSION-linux /opt/sonar-scanner
+  - /opt/sonar-scanner/bin/sonar-scanner -Dsonar.host.url=$SONAR_URL -Dsonar.login=$SONAR_TOKEN
+  only:
+    - master
+  dependencies:
+  - test:phpunit
