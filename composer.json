@@ -1,0 +1,24 @@
+{
+  "name": "cwreden/php7cc-build-tool",
+  "description": "This tool analysis the php7cc result and generate a diff of the last result to show the positive or negative tendency.",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Christian Wreden",
+      "email": "christian.wreden@googlemail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "cwreden\\php7ccAnalyser\\": "src/"
+    }
+  },
+  "require": {
+    "symfony/console": "^3.3",
+    "sstalle/php7cc": "^1.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^6.4"
+  }
+}
