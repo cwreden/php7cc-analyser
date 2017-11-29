@@ -5,17 +5,17 @@ namespace cwreden\php7ccAnalyser;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \cwreden\php7ccAnalyser\ScannedFileCollection
- * @uses \cwreden\php7ccAnalyser\ScannedFile
+ * @covers \cwreden\php7ccAnalyser\ScannedSourceFileCollection
+ * @uses \cwreden\php7ccAnalyser\ScannedSourceFile
  */
 class ScannedFileCollectionTest extends TestCase
 {
 
     public function testAddScannedFile()
     {
-        $scannedFileCollection = new ScannedFileCollection();
+        $scannedFileCollection = new ScannedSourceFileCollection();
 
-        $scannedFileCollection->add(new ScannedFile(
+        $scannedFileCollection->add(new ScannedSourceFile(
             '/path/to/my/directory/myfile.php',
             [
                 [
@@ -25,7 +25,7 @@ class ScannedFileCollectionTest extends TestCase
             ],
             []
         ));
-        $scannedFileCollection->add(new ScannedFile(
+        $scannedFileCollection->add(new ScannedSourceFile(
             "/path/to/my/directory/myfile.php",
             [
                 [
@@ -41,7 +41,7 @@ class ScannedFileCollectionTest extends TestCase
 
     public function testGetArrayIterator()
     {
-        $scannedFileCollection = new ScannedFileCollection();
+        $scannedFileCollection = new ScannedSourceFileCollection();
 
         $this->assertInstanceOf(\ArrayIterator::class, $scannedFileCollection->getIterator());
     }

@@ -4,7 +4,7 @@
 namespace cwreden\php7ccAnalyser;
 
 
-class ScannedFile
+class ScannedSourceFile
 {
     /**
      * @var string

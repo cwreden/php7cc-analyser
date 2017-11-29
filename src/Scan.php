@@ -11,16 +11,16 @@ class Scan
      */
     private $summary;
     /**
-     * @var ScannedFileCollection
+     * @var ScannedSourceFileCollection
      */
     private $scannedFileCollection;
 
     /**
      * Scan constructor.
      * @param Summary $summary
-     * @param ScannedFileCollection $scannedFileCollection
+     * @param ScannedSourceFileCollection $scannedFileCollection
      */
-    public function __construct(Summary $summary, ScannedFileCollection $scannedFileCollection)
+    public function __construct(Summary $summary, ScannedSourceFileCollection $scannedFileCollection)
     {
         $this->summary = $summary;
         $this->scannedFileCollection = $scannedFileCollection;
@@ -40,7 +40,7 @@ class Scan
     public function getTotalWarnings()
     {
         $warnings = 0;
-        /** @var ScannedFile $scannedFile */
+        /** @var ScannedSourceFile $scannedFile */
         foreach ($this->getScannedFileCollection() as $scannedFile) {
             $warnings += $scannedFile->getTotalWarnings();
         }
@@ -53,7 +53,7 @@ class Scan
     public function getTotalErrors()
     {
         $errors = 0;
-        /** @var ScannedFile $scannedFile */
+        /** @var ScannedSourceFile $scannedFile */
         foreach ($this->getScannedFileCollection() as $scannedFile) {
             $errors += $scannedFile->getTotalErrors();
         }
@@ -69,9 +69,9 @@ class Scan
     }
 
     /**
-     * @return ScannedFileCollection
+     * @return ScannedSourceFileCollection
      */
-    public function getScannedFileCollection(): ScannedFileCollection
+    public function getScannedFileCollection(): ScannedSourceFileCollection
     {
         return $this->scannedFileCollection;
     }

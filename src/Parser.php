@@ -18,9 +18,9 @@ class Parser
             $result['summary']['checkedFiles']
         );
 
-        $scannedFileCollection = new ScannedFileCollection();
+        $scannedFileCollection = new ScannedSourceFileCollection();
         foreach ($result['files'] as $file) {
-            $scannedFileCollection->add(new ScannedFile(
+            $scannedFileCollection->add(new ScannedSourceFile(
                 $file['name'],
                 $file['warnings'],
                 $file['errors']

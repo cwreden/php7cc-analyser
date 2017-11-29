@@ -7,8 +7,8 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \cwreden\php7ccAnalyser\Scan
  * @uses \cwreden\php7ccAnalyser\Summary
- * @uses \cwreden\php7ccAnalyser\ScannedFile
- * @uses \cwreden\php7ccAnalyser\ScannedFileCollection
+ * @uses \cwreden\php7ccAnalyser\ScannedSourceFile
+ * @uses \cwreden\php7ccAnalyser\ScannedSourceFileCollection
  */
 class ScanTest extends TestCase
 {
@@ -39,8 +39,8 @@ class ScanTest extends TestCase
 
     protected function setUp()
     {
-        $scannedFileCollection = new ScannedFileCollection();
-        $scannedFileCollection->add(new ScannedFile(
+        $scannedFileCollection = new ScannedSourceFileCollection();
+        $scannedFileCollection->add(new ScannedSourceFile(
             "/path/to/my/directory/myfile.php",
             [
                 [
@@ -50,7 +50,7 @@ class ScanTest extends TestCase
             ],
             []
         ));
-        $scannedFileCollection->add(new ScannedFile(
+        $scannedFileCollection->add(new ScannedSourceFile(
             "/path/to/my/directory/myfile.php",
             [
                 [

@@ -5,12 +5,12 @@ namespace cwreden\php7ccAnalyser;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \cwreden\php7ccAnalyser\ScannedFile
+ * @covers \cwreden\php7ccAnalyser\ScannedSourceFile
  */
 class ScannedFileTest extends TestCase
 {
     /**
-     * @var ScannedFile
+     * @var ScannedSourceFile
      */
     private $scannedFile;
 
@@ -41,7 +41,7 @@ class ScannedFileTest extends TestCase
 
     protected function setUp()
     {
-        $this->scannedFile = new ScannedFile(
+        $this->scannedFile = new ScannedSourceFile(
             '/path/to/my/directory/myfile.php',
             [
                 [

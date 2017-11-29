@@ -6,7 +6,7 @@ namespace cwreden\php7ccAnalyser\Console;
 
 use cwreden\php7ccAnalyser\Parser;
 use cwreden\php7ccAnalyser\ScanAnalyserTest;
-use cwreden\php7ccAnalyser\ScannedFile;
+use cwreden\php7ccAnalyser\ScannedSourceFile;
 use cwreden\php7ccAnalyser\ScanResultFile;
 use SebastianBergmann\CodeCoverage\Report\PHP;
 use Symfony\Component\Console\Command\Command;
@@ -56,7 +56,7 @@ class PHP7CCAnalyseCommand extends Command
 
         if ($showList) {
             $scannedFileCollection = $scan->getScannedFileCollection();
-            /** @var ScannedFile $scannedFile */
+            /** @var ScannedSourceFile $scannedFile */
             foreach ($scannedFileCollection as $scannedFile) {
                 $output->writeln(PHP_EOL . $scannedFile->getPath());
                 $output->writeln('==================================================');

@@ -6,10 +6,10 @@ namespace cwreden\php7ccAnalyser;
 
 use Traversable;
 
-class ScannedFileCollection implements \IteratorAggregate
+class ScannedSourceFileCollection implements \IteratorAggregate
 {
     /**
-     * @var ScannedFile[]
+     * @var ScannedSourceFile[]
      */
     private $scannedFiles = [];
 
@@ -34,9 +34,9 @@ class ScannedFileCollection implements \IteratorAggregate
     }
 
     /**
-     * @param ScannedFile $scannedFile
+     * @param ScannedSourceFile $scannedFile
      */
-    public function add(ScannedFile $scannedFile): void
+    public function add(ScannedSourceFile $scannedFile): void
     {
         $this->scannedFiles[] = $scannedFile;
     }
