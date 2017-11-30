@@ -20,11 +20,12 @@ class MemPersistenceAdapter implements PersistenceAdapterInterface
 
     /**
      * @return Scan
+     * @throws NoPreviousScanFoundException
      */
     public function getLast(): Scan
     {
         if ($this->lastScan === null) {
-            return new Scan(new Summary(0), new ScannedSourceFileCollection());
+            throw new NoPreviousScanFoundException();
         }
         return $this->lastScan;
     }

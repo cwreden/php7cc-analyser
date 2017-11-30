@@ -37,12 +37,12 @@ class MemPersistenceAdapterTest extends TestCase
         $this->assertEquals($secondScan, $memPersistenceAdapter->getLast());
     }
 
-    public function testGetDummyScanIfNothingWasPersisted()
+    public function testCheckNoPreviousScanException()
     {
+        $this->expectException(NoPreviousScanFoundException::class);
+
         $memPersistenceAdapter = new MemPersistenceAdapter();
 
-        $scan = $memPersistenceAdapter->getLast();
-        $this->assertEquals(0, $scan->getSummary()->getCheckedFiles());
-        $this->assertEquals(0, $scan->getScannedFileCollection()->getTotal());
+        $memPersistenceAdapter->getLast();
     }
 }
