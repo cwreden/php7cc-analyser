@@ -57,7 +57,7 @@ test:php7cc:
   image: cwreden/php7cc-docker
   stage: test
   script:
-  - php7cc -o json . >> scan.json
+  - php7cc -o json . | json_pp >> php7ccScan.json
   artifacts:
     paths:
     - scan.json
