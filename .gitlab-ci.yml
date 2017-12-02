@@ -53,6 +53,18 @@ test:phpunit:
   dependencies:
   - build:composer
 
+test:php7cc:
+  image: cwreden/php7cc-docker
+  stage: test
+  script:
+  - php7cc -o json . >> scan.json
+  artifacts:
+    path:
+    - scan.json
+    expire_in: 1 hour
+  dependencies:
+  - build:composer
+
 
 analyse:sonarqube:
   image: java:openjdk-8u111-jre
