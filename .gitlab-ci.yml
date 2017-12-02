@@ -59,7 +59,7 @@ test:php7cc:
   script:
   - php7cc -o json . >> scan.json
   artifacts:
-    path:
+    paths:
     - scan.json
     expire_in: 1 hour
   dependencies:
