@@ -60,7 +60,7 @@ test:php7cc:
   - php7cc -o json . | json_pp >> php7ccScan.json
   artifacts:
     paths:
-    - scan.json
+    - php7ccScan.json
     expire_in: 1 hour
   dependencies:
   - build:composer
