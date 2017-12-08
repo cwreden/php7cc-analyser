@@ -11,21 +11,21 @@ class ScannedSourceFile
      */
     private $path;
     /**
-     * @var array
+     * @var IssueCollection
      */
     private $warnings;
     /**
-     * @var array
+     * @var IssueCollection
      */
     private $errors;
 
     /**
-     * ScannedFile constructor.
-     * @param string $path
-     * @param array $warnings
-     * @param array $errors
+     * ScannedSourceFile constructor.
+     * @param $path
+     * @param IssueCollection $warnings
+     * @param IssueCollection $errors
      */
-    public function __construct($path, array $warnings, array $errors)
+    public function __construct($path, IssueCollection $warnings, IssueCollection $errors)
     {
         $this->path = $path;
         $this->warnings = $warnings;
@@ -45,7 +45,7 @@ class ScannedSourceFile
      */
     public function getTotalWarnings(): int
     {
-        return count($this->warnings);
+        return $this->warnings->getTotal();
     }
 
     /**
@@ -53,21 +53,21 @@ class ScannedSourceFile
      */
     public function getTotalErrors(): int
     {
-        return count($this->errors);
+        return $this->errors->getTotal();
     }
 
     /**
-     * @return array
+     * @return IssueCollection
      */
-    public function getWarnings(): array
+    public function getWarnings(): IssueCollection
     {
         return $this->warnings;
     }
 
     /**
-     * @return array
+     * @return IssueCollection
      */
-    public function getErrors(): array
+    public function getErrors(): IssueCollection
     {
         return $this->errors;
     }
