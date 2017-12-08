@@ -20,10 +20,21 @@ class Parser
 
         $scannedFileCollection = new ScannedSourceFileCollection();
         foreach ($result['files'] as $file) {
+            $warningIssueCollection = new IssueCollection();
+            $errorIssueCollection = new IssueCollection();
+
+            foreach ($file['warnings'] as $warning) {
+                $warningIssueCollection->add(new Issue($warning['line'], $warning['text']));
+            }
+
+            foreach ($file['errors'] as $error) {
+                $errorIssueCollection->add(new Issue($error['line'], $error['text']));
+            }
+
             $scannedFileCollection->add(new ScannedSourceFile(
                 $file['name'],
-                $file['warnings'],
-                $file['errors']
+                $warningIssueCollection,
+                $errorIssueCollection
             ));
         }
 

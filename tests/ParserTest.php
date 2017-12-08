@@ -9,6 +9,8 @@ use PHPUnit\Framework\TestCase;
  * @uses \cwreden\php7ccAnalyser\ScannedSourceFile
  * @uses \cwreden\php7ccAnalyser\ScannedSourceFileCollection
  * @uses \cwreden\php7ccAnalyser\Summary
+ * @uses \cwreden\php7ccAnalyser\IssueCollection
+ * @uses \cwreden\php7ccAnalyser\Issue
  */
 class ParserTest extends TestCase
 {
