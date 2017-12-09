@@ -18,4 +18,5 @@ if (!$loader) {
 }
 
 $app = new \cwreden\php7ccAnalyser\Console\Application();
+// TODO handle exception
 $app->run();

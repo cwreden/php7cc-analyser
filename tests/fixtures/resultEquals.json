@@ -5,6 +5,7 @@
    },
    "files" : [
       {
+         "errors" : {},
          "name" : "/path/to/my/directory/myfile.php",
          "warnings" : [
             {
@@ -15,17 +16,16 @@
                "line" : 16,
                "text" : "Reserved name \"string\" used as a class, interface or trait name "
             }
-         ],
-         "errors" : {}
+         ]
       },
       {
-         "name" : "/path/to/my/directory/otherfile.php",
          "warnings" : [
             {
                "line" : 6,
                "text" : "Reserved name \"string\" used as a class, interface or trait name "
             }
          ],
+         "name" : "/path/to/my/directory/otherfile.php",
          "errors" : {}
       }
    ]

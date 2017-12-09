@@ -22,7 +22,7 @@ class ScannedSourceFileCollection implements \IteratorAggregate
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->scannedFiles);
+        return new \ArrayIterator(array_values($this->scannedFiles));
     }
 
     /**
@@ -38,6 +38,30 @@ class ScannedSourceFileCollection implements \IteratorAggregate
      */
     public function add(ScannedSourceFile $scannedFile): void
     {
-        $this->scannedFiles[] = $scannedFile;
+        $this->scannedFiles[$scannedFile->getPath()] = $scannedFile;
     }
+//
+//    /**
+//     * @return array
+//     */
+//    public function getTotalWarningMap()
+//    {
+//        $map = [];
+//        foreach ($this->scannedFiles as $scannedFile) {
+//            $map[$scannedFile->getPath()] = $scannedFile->getTotalWarnings();
+//        }
+//        return $map;
+//    }
+//
+//    /**
+//     * @return array
+//     */
+//    public function getTotalErrorMap()
+//    {
+//        $map = [];
+//        foreach ($this->scannedFiles as $scannedFile) {
+//            $map[$scannedFile->getPath()] = $scannedFile->getTotalErrors();
+//        }
+//        return $map;
+//    }
 }

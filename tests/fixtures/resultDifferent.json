@@ -1,7 +1,7 @@
 {
    "summary" : {
       "elapsedTime" : 0.0060338973999023,
-      "checkedFiles" : 3
+      "checkedFiles" : 5
    },
    "files" : [
       {
@@ -9,24 +9,34 @@
          "warnings" : [
             {
                "text" : "String containing number in hexadecimal notation",
-               "line" : 13
+               "line" : 42
             },
             {
-               "line" : 16,
+               "text" : "String containing number in hexadecimal notation",
+               "line" : 166
+            }
+         ],
+         "errors" : {}
+      },
+      {
+         "name" : "/path/to/my/directory/secondfile.php",
+         "warnings" : [
+            {
+               "line" : 7,
                "text" : "Reserved name \"string\" used as a class, interface or trait name "
             }
          ],
          "errors" : {}
       },
       {
-         "name" : "/path/to/my/directory/otherfile.php",
-         "warnings" : [
+         "name" : "/path/to/my/directory/thirdfile.php",
+         "warnings" : {},
+         "errors" : [
             {
-               "line" : 6,
+               "line" : 23,
                "text" : "Reserved name \"string\" used as a class, interface or trait name "
             }
-         ],
-         "errors" : {}
+         ]
       }
    ]
 }

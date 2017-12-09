@@ -9,6 +9,8 @@ use PHPUnit\Framework\TestCase;
  * @uses \cwreden\php7ccAnalyser\Summary
  * @uses \cwreden\php7ccAnalyser\ScannedSourceFile
  * @uses \cwreden\php7ccAnalyser\ScannedSourceFileCollection
+ * @uses \cwreden\php7ccAnalyser\Issue
+ * @uses \cwreden\php7ccAnalyser\IssueCollection
  */
 class ScanTest extends TestCase
 {
@@ -39,26 +41,22 @@ class ScanTest extends TestCase
 
     protected function setUp()
     {
+        $warningCollection1 = new IssueCollection();
+        $warningCollection1->add(new Issue(13, "String containing number in hexadecimal notation"));
+
+        $warningCollection2 = new IssueCollection();
+        $warningCollection2->add(new Issue(6, "Reserved name \"string\" used as a class, interface or trait name "));
+
         $scannedFileCollection = new ScannedSourceFileCollection();
         $scannedFileCollection->add(new ScannedSourceFile(
             "/path/to/my/directory/myfile.php",
-            [
-                [
-                    "text" => "String containing number in hexadecimal notation",
-                    "line" => 13
-                ]
-            ],
-            []
+            $warningCollection1,
+            new IssueCollection()
         ));
         $scannedFileCollection->add(new ScannedSourceFile(
-            "/path/to/my/directory/myfile.php",
-            [
-                [
-                    "line" => 6,
-                    "text" => "Reserved name \"string\" used as a class, interface or trait name "
-                ]
-            ],
-            []
+            "/path/to/my/directory/otherfile.php",
+            $warningCollection2,
+            new IssueCollection()
         ));
 
         $this->scan = new Scan(

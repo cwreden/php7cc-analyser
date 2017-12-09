@@ -24,11 +24,11 @@ class Parser
             $errorIssueCollection = new IssueCollection();
 
             foreach ($file['warnings'] as $warning) {
-                $warningIssueCollection->add(new Issue($warning['line'], $warning['text']));
+                $warningIssueCollection->add(new Issue((int)$warning['line'], $warning['text']));
             }
 
             foreach ($file['errors'] as $error) {
-                $errorIssueCollection->add(new Issue($error['line'], $error['text']));
+                $errorIssueCollection->add(new Issue((int)$error['line'], $error['text']));
             }
 
             $scannedFileCollection->add(new ScannedSourceFile(

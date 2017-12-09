@@ -4,11 +4,11 @@
 namespace cwreden\php7ccAnalyser\Console;
 
 
+use cwreden\php7ccAnalyser\Analyser;
+use cwreden\php7ccAnalyser\FilePersistenceAdapter;
 use cwreden\php7ccAnalyser\Parser;
-use cwreden\php7ccAnalyser\ScanAnalyserTest;
 use cwreden\php7ccAnalyser\ScannedSourceFile;
 use cwreden\php7ccAnalyser\ScanResultFile;
-use SebastianBergmann\CodeCoverage\Report\PHP;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -48,40 +48,46 @@ class PHP7CCAnalyseCommand extends Command
         $path = $input->getArgument(static::PATH_ARGUMENT_NAME);
         $showList = $input->getOption(static::LIST_OPTION_NAME);
 
-        $parser = new Parser();
-        $scan = $parser->parse(new ScanResultFile($path));
+        $analyser = new Analyser(new FilePersistenceAdapter());
+        $analyseResult = $analyser->analyse(new ScanResultFile($path));
+        $scan = $analyseResult->getActualScan();
 
         $totalErrors = $scan->getTotalErrors();
         $totalWarnings = $scan->getTotalWarnings();
+        $totalNewErrors = $analyseResult->getTotalNewErrors();
+        $totalNewWarnings = $analyseResult->getTotalNewWarnings();
 
         if ($showList) {
-            $scannedFileCollection = $scan->getScannedFileCollection();
-            /** @var ScannedSourceFile $scannedFile */
-            foreach ($scannedFileCollection as $scannedFile) {
-                $output->writeln(PHP_EOL . $scannedFile->getPath());
-                $output->writeln('==================================================');
-                foreach ($scannedFile->getErrors() as $error) {
-                    $output->writeln(sprintf(
-                        'Line: %d => %s',
-                        $error['line'],
-                        $error['text']
-                    ));
-                }
-                foreach ($scannedFile->getWarnings() as $warning) {
-                    $output->writeln(sprintf(
-                        'Line: %d => %s',
-                        $warning['line'],
-                        $warning['text']
-                    ));
-                }
-            }
+//            $scannedFileCollection = $scan->getScannedFileCollection();
+//            /** @var ScannedSourceFile $scannedFile */
+//            foreach ($scannedFileCollection as $scannedFile) {
+//                $output->writeln(PHP_EOL . $scannedFile->getPath());
+//                $output->writeln('==================================================');
+//                foreach ($scannedFile->getErrors() as $error) {
+//                    $output->writeln(sprintf(
+//                        'Line: %d => %s',
+//                        $error['line'],
+//                        $error['text']
+//                    ));
+//                }
+//                foreach ($scannedFile->getWarnings() as $warning) {
+//                    $output->writeln(sprintf(
+//                        'Line: %d => %s',
+//                        $warning['line'],
+//                        $warning['text']
+//                    ));
+//                }
+//            }
         }
 
         $output->writeln(sprintf(
-            PHP_EOL . PHP_EOL . '[Checked files: %d, Effected files: %d, Warnings: %d, Errors: %d]' . PHP_EOL,
+            PHP_EOL . PHP_EOL . '[Checked files: %d, Effected files: %d(%d), Warnings: %d(%d), Errors: %d(%d)]' . PHP_EOL,
             $scan->getSummary()->getCheckedFiles(),
+            $analyseResult->getTotalEffectedNewFiles(),
             $scan->getTotalEffectedFiles(),
+            $totalNewWarnings,
             $totalWarnings,
+            $totalNewErrors,
             $totalErrors
         ));
 

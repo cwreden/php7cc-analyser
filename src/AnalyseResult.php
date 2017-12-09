@@ -14,42 +14,55 @@ class AnalyseResult
      */
     private $previousScan;
     /**
-     * @var array
+     * @var int
      */
-    private $newWarnings;
+    private $totalNewWarnings;
     /**
-     * @var array
+     * @var int
      */
-    private $newErrors;
+    private $totalNewErrors;
 
     /**
-     * ScanDiff constructor.
-     * @param array $newWarnings
-     * @param array $newErrors
+     * AnalyseResult constructor.
+     * @param int $totalNewWarnings
+     * @param int $totalNewErrors
      * @param Scan $actualScan
-     * @param Scan $previousScan
+     * @param Scan|null $previousScan
      */
-    public function __construct(array $newWarnings, array $newErrors, Scan $actualScan, Scan $previousScan = null)
+    public function __construct(int $totalNewWarnings, int $totalNewErrors, Scan $actualScan, Scan $previousScan = null)
     {
         $this->actualScan = $actualScan;
         $this->previousScan = $previousScan;
-        $this->newWarnings = $newWarnings;
-        $this->newErrors = $newErrors;
+        $this->totalNewWarnings = $totalNewWarnings;
+        $this->totalNewErrors = $totalNewErrors;
     }
 
     /**
-     * @return array
+     * @return int
      */
-    public function getNewWarnings()
+    public function getTotalNewWarnings(): int
     {
-        return $this->newWarnings;
+        return $this->totalNewWarnings;
     }
 
     /**
-     * @return array
+     * @return int
      */
-    public function getNewErrors()
+    public function getTotalNewErrors(): int
     {
-        return $this->newErrors;
+        return $this->totalNewErrors;
+    }
+
+    /**
+     * @return Scan
+     */
+    public function getActualScan(): Scan
+    {
+        return $this->actualScan;
+    }
+
+    public function getTotalEffectedNewFiles()
+    {
+        return 0;
     }
 }

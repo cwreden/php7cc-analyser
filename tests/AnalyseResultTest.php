@@ -15,29 +15,29 @@ class AnalyseResultTest extends TestCase
 
     public function testCanGetNewWarnings()
     {
-        $newWarnings = [
-            [
-                'text' => 'test warning',
-                'line' => 42
-            ]
-        ];
-        $diff = new AnalyseResult($newWarnings, [], new Scan(new Summary(2), new ScannedSourceFileCollection()));
+        $diff = new AnalyseResult(
+            1,
+            0,
+            new Scan(
+                new Summary(2),
+                new ScannedSourceFileCollection()
+            )
+        );
 
-        $this->assertCount(1, $diff->getNewWarnings());
-        $this->assertInternalType('array', $diff->getNewWarnings());
+        $this->assertEquals(1, $diff->getTotalNewWarnings());
     }
 
     public function testCanGetNewErrors()
     {
-        $newErrors = [
-            [
-                'text' => 'test error',
-                'line' => 666
-            ]
-        ];
-        $diff = new AnalyseResult([], $newErrors, new Scan(new Summary(2), new ScannedSourceFileCollection()));
+        $diff = new AnalyseResult(
+            0,
+            1,
+            new Scan(
+                new Summary(2),
+                new ScannedSourceFileCollection()
+            )
+        );
 
-        $this->assertCount(1, $diff->getNewErrors());
-        $this->assertInternalType('array', $diff->getNewErrors());
+        $this->assertEquals(1, $diff->getTotalNewErrors());
     }
 }

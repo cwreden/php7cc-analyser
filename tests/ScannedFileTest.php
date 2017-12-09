@@ -6,6 +6,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \cwreden\php7ccAnalyser\ScannedSourceFile
+ * @uses \cwreden\php7ccAnalyser\Issue
+ * @uses \cwreden\php7ccAnalyser\IssueCollection
  */
 class ScannedFileTest extends TestCase
 {
@@ -31,25 +33,23 @@ class ScannedFileTest extends TestCase
 
     public function testGetWarnings()
     {
-        $this->assertInternalType('array', $this->scannedFile->getWarnings());
+        $this->assertInstanceOf(IssueCollection::class, $this->scannedFile->getWarnings());
     }
 
     public function testGetErrors()
     {
-        $this->assertInternalType('array', $this->scannedFile->getErrors());
+        $this->assertInstanceOf(IssueCollection::class, $this->scannedFile->getErrors());
     }
 
     protected function setUp()
     {
+        $warningCollection = new IssueCollection();
+        $warningCollection->add(new Issue(13, "String containing number in hexadecimal notation"));
+
         $this->scannedFile = new ScannedSourceFile(
             '/path/to/my/directory/myfile.php',
-            [
-                [
-                    "text" => "String containing number in hexadecimal notation",
-                    "line" => 13
-                ]
-            ],
-            []
+            $warningCollection,
+            new IssueCollection()
         );
     }
 
