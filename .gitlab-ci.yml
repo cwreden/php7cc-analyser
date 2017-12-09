@@ -26,9 +26,6 @@ build:composer:
     paths:
     - vendor/
     expire_in: 1 hour
-  cache:
-    paths:
-    - vendor/
 
 
 test:lint:
