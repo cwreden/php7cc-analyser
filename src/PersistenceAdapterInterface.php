@@ -12,6 +12,7 @@ interface PersistenceAdapterInterface
 
     /**
      * @return Scan
+     * @throws NoPreviousScanFoundException
      */
     public function getLast(): Scan;
 }
