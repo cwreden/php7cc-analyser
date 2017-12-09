@@ -54,6 +54,7 @@ test:php7cc:
   image: cwreden/php7cc-docker
   stage: test
   script:
+  - mkdir build
   - php7cc -o json . | json_pp >> build/php7ccScan.json
   - bin/php7ccAnalyser build/php7ccScan.json
   artifacts:
