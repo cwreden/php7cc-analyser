@@ -56,17 +56,24 @@ test:php7cc:
   script:
   - mkdir build
   - php7cc -o json . | json_pp >> build/php7ccScan.json
-  - bin/php7ccAnalyser build/php7ccScan.json
   artifacts:
     paths:
     - build/php7ccScan.json
     expire_in: 1 hour
-  cache:
-    paths:
-    - lastScan/
   dependencies:
   - build:composer
 
+analyse:php7ccAnalyser:
+  image: php:7.1
+  stage: analyse
+  script:
+  - bin/php7ccAnalyser build/php7ccScan.json
+  allow_failure: true
+  cache:
+    paths:
+    - lastScan
+  dependencies:
+  - test:php7cc
 
 analyse:sonarqube:
   image: java:openjdk-8u111-jre
