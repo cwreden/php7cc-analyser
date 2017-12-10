@@ -6,8 +6,6 @@ namespace cwreden\php7ccAnalyser\Console;
 
 use cwreden\php7ccAnalyser\Analyser;
 use cwreden\php7ccAnalyser\FilePersistenceAdapter;
-use cwreden\php7ccAnalyser\Parser;
-use cwreden\php7ccAnalyser\ScannedSourceFile;
 use cwreden\php7ccAnalyser\ScanResultFile;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
