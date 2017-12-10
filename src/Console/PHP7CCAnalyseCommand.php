@@ -20,6 +20,8 @@ class PHP7CCAnalyseCommand extends Command
     const COMMAND_NAME = 'php7ccAnalyse';
     const PATH_ARGUMENT_NAME = 'path';
     const LIST_OPTION_NAME = 'list';
+    const PREVIEW_OPTION_NAME = 'preview';
+    const IGNORE_FIRST_RESULT_OPTION_NAME = 'ignore-first';
 
     /**
      * {@inheritdoc}
@@ -36,7 +38,19 @@ class PHP7CCAnalyseCommand extends Command
                 static::LIST_OPTION_NAME,
                 'l',
                 InputOption::VALUE_NONE,
-                'Show all matched compatibility errors.'
+                'Show all matched compatibility issues.'
+            )
+            ->addOption(
+                static::PREVIEW_OPTION_NAME,
+                '',
+                InputOption::VALUE_NONE,
+                'Preview mode does not save the scan for upcoming analyses'
+            )
+            ->addOption(
+                static::IGNORE_FIRST_RESULT_OPTION_NAME,
+                '',
+                InputOption::VALUE_NONE,
+                'The analyse will not fail without a previous scan.'
             );
     }
 
@@ -47,61 +61,31 @@ class PHP7CCAnalyseCommand extends Command
     {
         $path = $input->getArgument(static::PATH_ARGUMENT_NAME);
         $showList = $input->getOption(static::LIST_OPTION_NAME);
+        $preview = $input->getOption(static::PREVIEW_OPTION_NAME);
+        $ignoreFirstResult = $input->getOption(static::IGNORE_FIRST_RESULT_OPTION_NAME);
 
         $cachePath = '.' . DIRECTORY_SEPARATOR . 'lastScan';
-        $analyser = new Analyser(new FilePersistenceAdapter($cachePath));
-        $analyseResult = $analyser->analyse(new ScanResultFile($path));
-        $scan = $analyseResult->getActualScan();
+        $analyser = new Analyser(
+            $output,
+            new FilePersistenceAdapter($cachePath)
+        );
+        $analyseResult = $analyser->analyse(new ScanResultFile($path), !$preview, $showList);
 
-        $totalErrors = $scan->getTotalErrors();
-        $totalWarnings = $scan->getTotalWarnings();
-        $totalNewErrors = $analyseResult->getTotalNewErrors();
-        $totalNewWarnings = $analyseResult->getTotalNewWarnings();
-
-        if ($showList) {
-//            $scannedFileCollection = $scan->getScannedFileCollection();
-//            /** @var ScannedSourceFile $scannedFile */
-//            foreach ($scannedFileCollection as $scannedFile) {
-//                $output->writeln(PHP_EOL . $scannedFile->getPath());
-//                $output->writeln('==================================================');
-//                foreach ($scannedFile->getErrors() as $error) {
-//                    $output->writeln(sprintf(
-//                        'Line: %d => %s',
-//                        $error['line'],
-//                        $error['text']
-//                    ));
-//                }
-//                foreach ($scannedFile->getWarnings() as $warning) {
-//                    $output->writeln(sprintf(
-//                        'Line: %d => %s',
-//                        $warning['line'],
-//                        $warning['text']
-//                    ));
-//                }
-//            }
-        }
-
-        $output->writeln(sprintf(
-            PHP_EOL . PHP_EOL . '[Checked files: %d, Effected files: %d(%d), Warnings: %d(%d), Errors: %d(%d)]' . PHP_EOL,
-            $scan->getSummary()->getCheckedFiles(),
-            $analyseResult->getTotalEffectedNewFiles(),
-            $scan->getTotalEffectedFiles(),
-            $totalNewWarnings,
-            $totalWarnings,
-            $totalNewErrors,
-            $totalErrors
-        ));
-
-        if ($totalErrors > 0) {
-            $output->writeln('There are php 7 incompatible statements!');
-            return 2;
-        } elseif ($totalWarnings > 0) {
-            $output->writeln('There are php 7 risky statements!');
-            return 1;
+        $output->writeln(PHP_EOL);
+        if ($analyseResult === Analyser::RESULT_STATUS_FAILURES) {
+            $output->writeln('There are new php 7 incompatible statements!');
+        } elseif ($analyseResult === Analyser::RESULT_STATUS_RISKY) {
+            $output->writeln('There are new php 7 risky statements!');
         } else {
-            $output->writeln('There are no php 7 compatibility errors or warnings.');
-            return 0;
+            $output->writeln('There are no new php 7 compatibility errors or warnings.');
         }
+
+        if (!$ignoreFirstResult && $analyseResult === Analyser::RESULT_STATUS_FAILURES) {
+            return 2;
+        } elseif (!$ignoreFirstResult && $analyseResult === Analyser::RESULT_STATUS_RISKY) {
+            return 1;
+        }
+        return 0;
     }
 
 }

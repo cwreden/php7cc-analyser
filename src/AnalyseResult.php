@@ -2,7 +2,11 @@
 
 namespace cwreden\php7ccAnalyser;
 
-
+/**
+ * Class AnalyseResult
+ * @package cwreden\php7ccAnalyser
+ * @deprecated
+ */
 class AnalyseResult
 {
     /**
@@ -28,6 +32,7 @@ class AnalyseResult
      * @param int $totalNewErrors
      * @param Scan $actualScan
      * @param Scan|null $previousScan
+     * @deprecated
      */
     public function __construct(int $totalNewWarnings, int $totalNewErrors, Scan $actualScan, Scan $previousScan = null)
     {
