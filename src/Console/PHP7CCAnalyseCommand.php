@@ -48,7 +48,8 @@ class PHP7CCAnalyseCommand extends Command
         $path = $input->getArgument(static::PATH_ARGUMENT_NAME);
         $showList = $input->getOption(static::LIST_OPTION_NAME);
 
-        $analyser = new Analyser(new FilePersistenceAdapter());
+        $cachePath = '.' . DIRECTORY_SEPARATOR . 'lastScan';
+        $analyser = new Analyser(new FilePersistenceAdapter($cachePath));
         $analyseResult = $analyser->analyse(new ScanResultFile($path));
         $scan = $analyseResult->getActualScan();
 

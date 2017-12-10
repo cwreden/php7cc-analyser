@@ -5,6 +5,12 @@ namespace cwreden\php7ccAnalyser;
 
 class FilePersistenceAdapter implements PersistenceAdapterInterface
 {
+    private $path;
+
+    public function __construct($path)
+    {
+        $this->path = $path;
+    }
 
     /**
      * @param Scan $scan
@@ -12,18 +18,19 @@ class FilePersistenceAdapter implements PersistenceAdapterInterface
     public function persist(Scan $scan): void
     {
         $serializedScan = serialize($scan);
-        file_put_contents('./lastScan', $serializedScan);
+        file_put_contents($this->path, $serializedScan);
     }
 
     /**
      * @return Scan
+     * @throws NoPreviousScanFoundException
      */
     public function getLast(): Scan
     {
-        if (file_exists('./lastScan')) {
-            $content = file_get_contents('./lastScan');
-            return unserialize($content);
+        if (!file_exists($this->path)) {
+            throw new NoPreviousScanFoundException();
         }
-        return new Scan(new Summary(0), new ScannedSourceFileCollection());
+        $content = file_get_contents($this->path);
+        return unserialize($content);
     }
 }
