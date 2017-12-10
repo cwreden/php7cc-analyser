@@ -26,7 +26,12 @@
                "text" : "Reserved name \"string\" used as a class, interface or trait name "
             }
          ],
-         "errors" : {}
+         "errors" : [
+            {
+               "line" : 23,
+               "text" : "Reserved name \"string\" used as a class, interface or trait name "
+            }
+         ]
       }
    ]
 }

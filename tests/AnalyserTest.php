@@ -29,7 +29,7 @@ class AnalyserTest extends TestCase
         $result = $analyser->analyse($scanResultFile);
 
         $this->assertInstanceOf(AnalyseResult::class, $result);
-        $this->assertEquals(0, $result->getTotalNewErrors());
+        $this->assertEquals(1, $result->getTotalNewErrors());
         $this->assertEquals(3, $result->getTotalNewWarnings());
         }
 
