@@ -18,9 +18,7 @@ final class ScanResultFile
      */
     public function __construct(string $path)
     {
-        if (!file_exists($path)) {
-            throw new ResultFileNotFoundException('php7cc result file not found.');
-        }
+        $this->ensureResultFile($path);
         $this->path = $path;
     }
 
@@ -34,10 +32,27 @@ final class ScanResultFile
 
     /**
      * @return array
+     * @throws ScanResultParsingException
      */
     public function getResult(): array
     {
         $content = file_get_contents($this->getPath());
-        return json_decode($content, true);
+        $json = json_decode($content, true);
+
+        if (!is_array($json)) {
+            throw new ScanResultParsingException($this->getPath());
+        }
+        return $json;
+    }
+
+    /**
+     * @param string $path
+     * @throws ResultFileNotFoundException
+     */
+    private function ensureResultFile(string $path): void
+    {
+        if (!file_exists($path)) {
+            throw new ResultFileNotFoundException('php7cc result file not found.');
+        }
     }
 }
