@@ -1,0 +1,36 @@
+{
+  "chmod": "0755",
+  "directories": [
+    "src",
+    "bin"
+  ],
+  "finder": [
+    {
+      "exclude": [
+        "mikey179",
+        "phpunit",
+        "phpspec",
+        "phpdocumentor",
+        "sebastian",
+        "phpseclib",
+        "fabpot",
+        "phine",
+        "justinrainbow",
+        "herrera-io",
+        "seld",
+        "doctrine",
+        "tedivm",
+        "kherge"
+      ],
+      "in": [
+        "vendor"
+      ]
+    }
+  ],
+  "files": [
+
+  ],
+  "main": "bin/php7ccAnalyser.php",
+  "output": "php7ccAnalyser.phar",
+  "stub": true
+}
