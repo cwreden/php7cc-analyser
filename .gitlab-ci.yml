@@ -74,6 +74,7 @@ analyse:php7ccAnalyser:
     - lastScan
   dependencies:
   - test:php7cc
+  - build:composer
 
 analyse:sonarqube:
   image: java:openjdk-8u111-jre
