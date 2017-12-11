@@ -18,12 +18,14 @@ class TotalIssueMapTest extends TestCase
     {
         $this->assertEquals(2, $this->totalIssueMap->getWarningCounter('testPath'));
         $this->assertEquals(0, $this->totalIssueMap->getWarningCounter('testPath2'));
+        $this->assertEquals(0, $this->totalIssueMap->getWarningCounter('unknownKey'));
     }
 
     public function testGetErrorCounter()
     {
         $this->assertEquals(0, $this->totalIssueMap->getErrorCounter('testPath'));
         $this->assertEquals(1, $this->totalIssueMap->getErrorCounter('testPath2'));
+        $this->assertEquals(0, $this->totalIssueMap->getErrorCounter('unknownKey'));
     }
 
     public function testGetWarningMap()
@@ -33,7 +35,7 @@ class TotalIssueMapTest extends TestCase
 
     public function testGetErrorMap()
     {
-        $this->assertInternalType('array', $this->totalIssueMap->getWarningMap());
+        $this->assertInternalType('array', $this->totalIssueMap->getErrorMap());
     }
 
     protected function setUp()
