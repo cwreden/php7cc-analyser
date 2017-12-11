@@ -67,7 +67,7 @@ analyse:php7ccAnalyser:
   image: php:7.1
   stage: analyse
   script:
-  - bin/php7ccAnalyser build/php7ccScan.json
+  - bin/php7ccAnalyser build/php7ccScan.json --ignore-first
   allow_failure: true
   cache:
     paths:
