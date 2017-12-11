@@ -182,7 +182,7 @@ class Analyser
                     $this->output->writeln(sprintf(
                         '>> Line: %d => %s',
                         $error->getLine(),
-                        $error->getLine()
+                        $error->getText()
                     ));
                 }
             }
