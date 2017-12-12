@@ -29,4 +29,26 @@ class AnalyserEffectedFilesResultTest extends TestCase
 
         $this->assertEquals(5, $analyserEffectedFilesResult->getTotal());
     }
+
+    public function testIncreaseWarningCounter()
+    {
+        $analyserEffectedFilesResult = new AnalyserEffectedFilesResult();
+
+        $analyserEffectedFilesResult->increaseWarningCounterBy(1);
+        $analyserEffectedFilesResult->increaseWarningCounterBy(10);
+        $analyserEffectedFilesResult->increaseWarningCounterBy(4);
+
+        $this->assertEquals(15, $analyserEffectedFilesResult->getWarningCounter());
+    }
+
+    public function testIncreaseErrorCounter()
+    {
+        $analyserEffectedFilesResult = new AnalyserEffectedFilesResult();
+
+        $analyserEffectedFilesResult->increaseErrorCounterBy(1);
+        $analyserEffectedFilesResult->increaseErrorCounterBy(4);
+        $analyserEffectedFilesResult->increaseErrorCounterBy(5);
+
+        $this->assertEquals(10, $analyserEffectedFilesResult->getErrorCounter());
+    }
 }
