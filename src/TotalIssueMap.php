@@ -27,10 +27,10 @@ class TotalIssueMap
     }
 
     /**
-     * @param $key
+     * @param string $key
      * @return int
      */
-    public function getWarningCounter($key): int
+    public function getWarningCounter(string $key): int
     {
         if (isset($this->warningMap[$key])) {
             return $this->warningMap[$key];
@@ -39,9 +39,10 @@ class TotalIssueMap
     }
 
     /**
+     * @param string $key
      * @return int
      */
-    public function getErrorCounter($key): int
+    public function getErrorCounter(string $key): int
     {
         if (isset($this->errorMap[$key])) {
             return $this->errorMap[$key];

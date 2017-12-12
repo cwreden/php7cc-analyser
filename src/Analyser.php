@@ -195,12 +195,14 @@ class Analyser
                 continue;
             }
 
+            $previousTotal = 0;
             if ($previousTotalIssueMap instanceof TotalIssueMap) {
                 $previousTotal = $previousTotalIssueMap->getWarningCounter($key);
-                if ($total > $previousTotal) {
-                    $analyserEffectedFilesResult->increaseWarningCounterBy(($total - $previousTotal));
-                    $analyserEffectedFilesResult->addIfNotAlready($key);
-                }
+            }
+
+            if ($previousTotal > 0) {
+                $analyserEffectedFilesResult->increaseWarningCounterBy(($total - $previousTotal));
+                $analyserEffectedFilesResult->addIfNotAlready($key);
             } else {
                 $analyserEffectedFilesResult->increaseWarningCounterBy($total);
                 $analyserEffectedFilesResult->addIfNotAlready($key);
@@ -212,12 +214,14 @@ class Analyser
                 continue;
             }
 
+            $previousTotal = 0;
             if ($previousTotalIssueMap instanceof TotalIssueMap) {
                 $previousTotal = $previousTotalIssueMap->getErrorCounter($key);
-                if ($total > $previousTotal) {
-                    $analyserEffectedFilesResult->increaseErrorCounterBy(($total - $previousTotal));
-                    $analyserEffectedFilesResult->addIfNotAlready($key);
-                }
+            }
+
+            if ($previousTotal > 0) {
+                $analyserEffectedFilesResult->increaseErrorCounterBy(($total - $previousTotal));
+                $analyserEffectedFilesResult->addIfNotAlready($key);
             } else {
                 $analyserEffectedFilesResult->increaseErrorCounterBy($total);
                 $analyserEffectedFilesResult->addIfNotAlready($key);
