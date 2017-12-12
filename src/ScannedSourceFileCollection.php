@@ -40,28 +40,4 @@ class ScannedSourceFileCollection implements \IteratorAggregate
     {
         $this->scannedFiles[$scannedFile->getPath()] = $scannedFile;
     }
-//
-//    /**
-//     * @return array
-//     */
-//    public function getTotalWarningMap()
-//    {
-//        $map = [];
-//        foreach ($this->scannedFiles as $scannedFile) {
-//            $map[$scannedFile->getPath()] = $scannedFile->getTotalWarnings();
-//        }
-//        return $map;
-//    }
-//
-//    /**
-//     * @return array
-//     */
-//    public function getTotalErrorMap()
-//    {
-//        $map = [];
-//        foreach ($this->scannedFiles as $scannedFile) {
-//            $map[$scannedFile->getPath()] = $scannedFile->getTotalErrors();
-//        }
-//        return $map;
-//    }
 }

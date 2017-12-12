@@ -6,6 +6,8 @@ namespace cwreden\php7ccAnalyser;
 
 class Parser
 {
+    private const KEY_SUMMARY = 'summary';
+
     /**
      * @param ScanResultFile $scanResultFile
      * @return Scan
@@ -18,7 +20,7 @@ class Parser
         $this->ensureResultData($result);
 
         $summary = new Summary(
-            $result['summary']['checkedFiles']
+            $result[self::KEY_SUMMARY]['checkedFiles']
         );
 
         $scannedFileCollection = new ScannedSourceFileCollection();
@@ -54,10 +56,10 @@ class Parser
      */
     private function ensureResultData($result)
     {
-        if (!array_key_exists('summary', $result)) {
+        if (!array_key_exists(self::KEY_SUMMARY, $result)) {
             throw new ScanResultParsingException('Missing attribute "summary".');
         }
-        if (!array_key_exists('checkedFiles', $result['summary'])) {
+        if (!array_key_exists('checkedFiles', $result[self::KEY_SUMMARY])) {
             throw new ScanResultParsingException('Missing attribute "checkedFiles" under "summary".');
         }
         if (!array_key_exists('files', $result)) {
