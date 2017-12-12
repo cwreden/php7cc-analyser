@@ -38,6 +38,7 @@ class Analyser
      * @param bool $persist
      * @param bool $showList
      * @return string
+     * @throws ScanResultParsingException
      */
     public function analyse(ScanResultFile $scanResultFile, $persist = true, $showList = false)
     {

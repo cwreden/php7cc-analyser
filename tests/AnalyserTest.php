@@ -26,6 +26,9 @@ class AnalyserTest extends TestCase
      */
     private $analyser;
 
+    /**
+     * @throws ScanResultParsingException
+     */
     public function testAnalyseWithoutPreviousScan()
     {
         $scanResultFile = new ScanResultFile(__DIR__ . '/fixtures/resultExample.json');
@@ -34,6 +37,9 @@ class AnalyserTest extends TestCase
         $this->assertEquals(Analyser::RESULT_STATUS_FAILURES, $result);
         }
 
+    /**
+     * @throws ScanResultParsingException
+     */
     public function testAnalyseWithEqualORLessScan()
     {
         $scanResultFile1 = new ScanResultFile(__DIR__ . '/fixtures/resultExample.json');
@@ -47,6 +53,9 @@ class AnalyserTest extends TestCase
         $this->assertEquals(Analyser::RESULT_STATUS_OK, $result2);
     }
 
+    /**
+     * @throws ScanResultParsingException
+     */
     public function testAnalyseWithDifferentScan()
     {
         $scanResultFile1 = new ScanResultFile(__DIR__ . '/fixtures/resultExample.json');
@@ -58,6 +67,39 @@ class AnalyserTest extends TestCase
         $result2 = $this->analyser->analyse($scanResultFile2, false);
 
         $this->assertEquals(Analyser::RESULT_STATUS_FAILURES, $result2);
+    }
+
+    /**
+     * @throws ScanResultParsingException
+     */
+    public function testAnalyseRiskyResult()
+    {
+        $scanResultFile = new ScanResultFile(__DIR__ . '/fixtures/resultExampleNoErrors.json');
+        $result = $this->analyser->analyse($scanResultFile);
+
+        $this->assertEquals(Analyser::RESULT_STATUS_RISKY, $result);
+    }
+
+    /**
+     * @throws ScanResultParsingException
+     */
+    public function testShowList()
+    {
+        $scanResultFile = new ScanResultFile(__DIR__ . '/fixtures/resultExample.json');
+        $result = $this->analyser->analyse($scanResultFile, true, true);
+
+        $this->assertEquals(Analyser::RESULT_STATUS_FAILURES, $result);
+    }
+
+    /**
+     * @throws ScanResultParsingException
+     */
+    public function testDoNotPersist()
+    {
+        $scanResultFile = new ScanResultFile(__DIR__ . '/fixtures/resultExample.json');
+        $result = $this->analyser->analyse($scanResultFile, false);
+
+        $this->assertEquals(Analyser::RESULT_STATUS_FAILURES, $result);
     }
 
     protected function setUp()
