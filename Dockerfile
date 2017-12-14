@@ -4,10 +4,8 @@ LABEL maintainer="christian@wreden.eu"
 
 WORKDIR "/opt"
 
-COPY bin/ /usr/local/php7ccAnalyser/bin/
-COPY vendor/ /usr/local/php7ccAnalyser/vendor/
-COPY src/ /usr/local/php7ccAnalyser/src/
+ENV version=1.1.0
 
-RUN chmod +x /usr/local/php7ccAnalyser/bin/php7ccAnalyser
+ADD https://github.com/cwreden/php7cc-analyser/releases/download/$version/php7cc-analyser.phar /usr/local/bin/php7cc-analyser
 
-RUN ln -s /usr/local/php7ccAnalyser/bin/php7ccAnalyser /usr/local/bin/php7ccAnalyser
+RUN chmod +x /usr/local/bin/php7cc-analyser
