@@ -13,14 +13,9 @@ stages:
   - package
 
 build:composer:
-  image: php:7.1
+  image: cwreden/composer
   stage: build
   script:
-  - apt-get update -yqq
-  - apt-get install git zlib1g-dev -yqq
-  - docker-php-ext-install zip
-  - curl -sS https://getcomposer.org/installer | php
-  - mv composer.phar /usr/local/bin/composer
   - composer install -o
   artifacts:
     paths:
@@ -67,13 +62,14 @@ analyse:php7ccAnalyser:
   image: php:7.1
   stage: analyse
   script:
-  - bin/php7ccAnalyser build/php7ccScan.json
+  - bin/php7ccAnalyser build/php7ccScan.json --ignore-first
   allow_failure: true
   cache:
     paths:
     - lastScan
   dependencies:
   - test:php7cc
+  - build:composer
 
 analyse:sonarqube:
   image: java:openjdk-8u111-jre
@@ -83,7 +79,7 @@ analyse:sonarqube:
   - unzip sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
   - rm sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
   - mv sonar-scanner-$SONAR_SCANNER_VERSION-linux /opt/sonar-scanner
-  - /opt/sonar-scanner/bin/sonar-scanner -Dsonar.host.url=$SONAR_URL -Dsonar.login=$SONAR_TOKEN
+  - /opt/sonar-scanner/bin/sonar-scanner -Dsonar.host.url=$SONAR_URL -Dsonar.login=$SONAR_TOKEN -Dsonar.projectVersion=CI_COMMIT_REF_NAME
   only:
     - master
   dependencies:

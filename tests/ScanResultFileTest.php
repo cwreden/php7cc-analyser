@@ -27,10 +27,26 @@ class ScanResultFileTest extends TestCase
         new ScanResultFile(__DIR__ . '/fixtures/xxx.json');
     }
 
+    /**
+     * @throws ScanResultParsingException
+     */
     public function testGetResultAsArray()
     {
         $scanResultFile = new ScanResultFile(__DIR__ . '/fixtures/resultExample.json');
 
         $this->assertInternalType('array', $scanResultFile->getResult());
+    }
+
+    /**
+     * @covers \cwreden\php7ccAnalyser\ScanResultParsingException
+     * @throws ScanResultParsingException
+     */
+    public function testPreventEmptyResultFile()
+    {
+        $this->expectException(ScanResultParsingException::class);
+
+        $scanResultFile = new ScanResultFile(__DIR__ . '/fixtures/emptyFile.json');
+
+        $scanResultFile->getResult();
     }
 }

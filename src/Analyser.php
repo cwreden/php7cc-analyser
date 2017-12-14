@@ -38,6 +38,7 @@ class Analyser
      * @param bool $persist
      * @param bool $showList
      * @return string
+     * @throws ScanResultParsingException
      */
     public function analyse(ScanResultFile $scanResultFile, $persist = true, $showList = false)
     {
@@ -65,44 +66,7 @@ class Analyser
         $this->output->writeln(' ...done');
 
 
-        $newWarningCount = 0;
-        $newErrorCount = 0;
-        $newEffectedFiles = new AnalyserEffectedFilesResult();
-
-        foreach ($totalIssueMap->getWarningMap() as $key => $total) {
-            if ($total === 0) {
-                continue;
-            }
-
-            if ($previousTotalIssueMap instanceof TotalIssueMap) {
-                $previousTotal = $previousTotalIssueMap->getWarningCounter($key);
-                if ($total > $previousTotal) {
-                    $newWarningCount += ($total - $previousTotal);
-                    $newEffectedFiles->addIfNotAlready($key);
-                }
-            } else {
-                $newWarningCount += $total;
-                $newEffectedFiles->addIfNotAlready($key);
-            }
-        }
-
-        foreach ($totalIssueMap->getErrorMap() as $key => $total) {
-            if ($total === 0) {
-                continue;
-            }
-
-            if ($previousTotalIssueMap instanceof TotalIssueMap) {
-                $previousTotal = $previousTotalIssueMap->getErrorCounter($key);
-                if ($total > $previousTotal) {
-                    $newErrorCount += ($total - $previousTotal);
-                    $newEffectedFiles->addIfNotAlready($key);
-                }
-            } else {
-                $newErrorCount += $total;
-                $newEffectedFiles->addIfNotAlready($key);
-
-            }
-        }
+        $analyserEffectedFilesResult = $this->analyseIssues($totalIssueMap, $previousTotalIssueMap);
 
 
         if ($showList) {
@@ -111,14 +75,14 @@ class Analyser
 
 
         $status = self::RESULT_STATUS_OK;
-        if ($newErrorCount > 0) {
+        if ($analyserEffectedFilesResult->getErrorCounter() > 0) {
             $status = self::RESULT_STATUS_FAILURES;
-        } elseif ($newWarningCount > 0) {
+        } elseif ($analyserEffectedFilesResult->getWarningCounter() > 0) {
             $status = self::RESULT_STATUS_RISKY;
         }
 
 
-        $this->showAnalyseSummary($status, $scan, $newEffectedFiles, $newWarningCount, $newErrorCount);
+        $this->showAnalyseSummary($status, $scan, $analyserEffectedFilesResult);
 
 
         if ($persist) {
@@ -192,28 +156,73 @@ class Analyser
     /**
      * @param string $status
      * @param Scan $scan
-     * @param AnalyserEffectedFilesResult $newEffectedFiles
-     * @param int $newWarningCount
-     * @param int $newErrorCount
+     * @param AnalyserEffectedFilesResult $analyserEffectedFilesResult
      */
     public function showAnalyseSummary(
         string $status,
         Scan $scan,
-        AnalyserEffectedFilesResult $newEffectedFiles,
-        int $newWarningCount,
-        int $newErrorCount): void
+        AnalyserEffectedFilesResult $analyserEffectedFilesResult
+    ): void
     {
         $this->output->writeln(PHP_EOL);
         $this->output->writeln($status);
         $this->output->writeln(sprintf(
             '[Checked files: %d, Effected files: %d(%d), Warnings: %d(%d), Errors: %d(%d)]',
             $scan->getSummary()->getCheckedFiles(),
-            $newEffectedFiles->getTotal(),
+            $analyserEffectedFilesResult->getTotal(),
             $scan->getTotalEffectedFiles(),
-            $newWarningCount,
+            $analyserEffectedFilesResult->getWarningCounter(),
             $scan->getTotalWarnings(),
-            $newErrorCount,
+            $analyserEffectedFilesResult->getErrorCounter(),
             $scan->getTotalErrors()
         ));
+    }
+
+    /**
+     * @param TotalIssueMap $totalIssueMap
+     * @param TotalIssueMap $previousTotalIssueMap
+     * @return AnalyserEffectedFilesResult
+     */
+    private function analyseIssues(
+        TotalIssueMap $totalIssueMap,
+        TotalIssueMap $previousTotalIssueMap = null
+    ): AnalyserEffectedFilesResult
+    {
+        $analyserEffectedFilesResult = new AnalyserEffectedFilesResult();
+
+        foreach ($totalIssueMap->getWarningMap() as $key => $total) {
+            if ($total === 0) {
+                continue;
+            }
+
+            $previousTotal = 0;
+            if ($previousTotalIssueMap instanceof TotalIssueMap) {
+                $previousTotal = $previousTotalIssueMap->getWarningCounter($key);
+            }
+
+            if ($previousTotal > 0) {
+                $total -= $previousTotal;
+            }
+            $analyserEffectedFilesResult->increaseWarningCounterBy($total);
+            $analyserEffectedFilesResult->addIfNotAlready($key);
+        }
+
+        foreach ($totalIssueMap->getErrorMap() as $key => $total) {
+            if ($total === 0) {
+                continue;
+            }
+
+            $previousTotal = 0;
+            if ($previousTotalIssueMap instanceof TotalIssueMap) {
+                $previousTotal = $previousTotalIssueMap->getErrorCounter($key);
+            }
+
+            if ($previousTotal > 0) {
+                $total -= $previousTotal;
+            }
+            $analyserEffectedFilesResult->increaseErrorCounterBy($total);
+            $analyserEffectedFilesResult->addIfNotAlready($key);
+        }
+        return $analyserEffectedFilesResult;
     }
 }

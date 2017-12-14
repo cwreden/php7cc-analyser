@@ -1,7 +1,7 @@
 {
    "summary" : {
       "elapsedTime" : 0.0060338973999023,
-      "checkedFiles" : 30
+      "checkedFiles" : 3
    },
    "files" : [
       {
@@ -26,12 +26,7 @@
                "text" : "Reserved name \"string\" used as a class, interface or trait name "
             }
          ],
-         "errors" : [
-            {
-               "line" : 23,
-               "text" : "Reserved name \"string\" used as a class, interface or trait name "
-            }
-         ]
+         "errors" : {}
       }
    ]
 }
