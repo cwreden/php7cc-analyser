@@ -1,0 +1,24 @@
+language: php
+
+sudo: required
+dist: precise
+
+cache:
+  directories:
+    - "$HOME/.composer/cache"
+
+php:
+  - 7.1
+
+env:
+  - COMPOSER_FLAGS="--prefer-lowest"
+  - COMPOSER_FLAGS=""
+
+before_install:
+  - travis_retry composer self-update
+
+install:
+  - composer update $COMPOSER_FLAGS --no-interaction
+
+script:
+  - vendor/bin/phpunit
