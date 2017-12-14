@@ -24,4 +24,4 @@ script:
   - vendor/bin/phpunit
 
 after_script:
-  - if [[ $COMPOSER_FLAGS != '--prefer-lowest' ]]; then wget https://scrutinizer-ci.com/ocular.phar; php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
+  - if [[ $COMPOSER_FLAGS != '--prefer-lowest' ]]; then wget https://scrutinizer-ci.com/ocular.phar; php ocular.phar code-coverage:upload --format=php-clover build/coverage/clover.xml; fi
