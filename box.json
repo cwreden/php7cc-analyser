@@ -31,6 +31,6 @@
 
   ],
   "main": "bin/php7ccAnalyser.php",
-  "output": "php7ccAnalyser.phar",
+  "output": "php7cc-analyser.phar",
   "stub": true
 }

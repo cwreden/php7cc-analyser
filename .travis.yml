@@ -25,3 +25,8 @@ script:
 
 after_script:
   - if [[ $COMPOSER_FLAGS != '--prefer-lowest' ]]; then wget https://scrutinizer-ci.com/ocular.phar; php ocular.phar code-coverage:upload --format=php-clover build/coverage/clover.xml; fi
+
+before_deploy:
+  - "composer require kherge/box:~2.5"
+  - "composer update --prefer-lowest --no-dev"
+  - "./vendor/bin/box build"
