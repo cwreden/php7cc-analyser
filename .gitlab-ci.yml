@@ -79,7 +79,7 @@ analyse:sonarqube:
   - unzip sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
   - rm sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
   - mv sonar-scanner-$SONAR_SCANNER_VERSION-linux /opt/sonar-scanner
-  - /opt/sonar-scanner/bin/sonar-scanner -Dsonar.host.url=$SONAR_URL -Dsonar.login=$SONAR_TOKEN
+  - /opt/sonar-scanner/bin/sonar-scanner -Dsonar.host.url=$SONAR_URL -Dsonar.login=$SONAR_TOKEN -Dsonar.projectVersion=CI_COMMIT_REF_NAME
   only:
     - master
   dependencies:
