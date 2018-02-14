@@ -30,6 +30,7 @@ after_script:
 
 before_deploy:
 - curl -LSs https://box-project.github.io/box2/installer.php | php
+- ls
 - box.phar build
 
 deploy:
