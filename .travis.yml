@@ -29,9 +29,8 @@ after_script:
   fi
 
 before_deploy:
-- composer require kherge/box:~2.5
-- composer update --prefer-lowest --no-dev
-- ./vendor/bin/box build
+- curl -LSs https://box-project.github.io/box2/installer.php | php
+- box.phar build
 
 deploy:
   provider: releases
