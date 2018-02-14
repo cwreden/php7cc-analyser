@@ -5,41 +5,37 @@ dist: precise
 
 cache:
   directories:
-    - "$HOME/.composer/cache"
+  - "$HOME/.composer/cache"
 
 php:
-  - 7.1
+- 7.1
 
 env:
-  - COMPOSER_FLAGS="--prefer-lowest"
-  - COMPOSER_FLAGS=""
+- COMPOSER_FLAGS="--prefer-lowest"
+- COMPOSER_FLAGS=""
 
 before_install:
-  - travis_retry composer self-update
+- travis_retry composer self-update
 
 install:
-  - composer update $COMPOSER_FLAGS --no-interaction
+- composer update $COMPOSER_FLAGS --no-interaction
 
 script:
-  - vendor/bin/phpunit
+- vendor/bin/phpunit
 
 after_script:
-  - if [[ $COMPOSER_FLAGS != '--prefer-lowest' ]]; then wget https://scrutinizer-ci.com/ocular.phar;
-    php ocular.phar code-coverage:upload --format=php-clover build/coverage/clover.xml;
-    fi
+- if [[ $COMPOSER_FLAGS != '--prefer-lowest' ]]; then wget https://scrutinizer-ci.com/ocular.phar;
+  php ocular.phar code-coverage:upload --format=php-clover build/coverage/clover.xml;
+  fi
 
 before_deploy:
-  - "composer require kherge/box:~2.5"
-  - "composer update --prefer-lowest --no-dev"
-  - "./vendor/bin/box build"
+- curl -LSs https://box-project.github.io/box2/installer.php | php
+- box build
 
 deploy:
   provider: releases
   api_key:
-    secure: YkL13UML954NFLawZIRG1MIDNEPRv5ri4hW1k37hFJHkWF6Kv0xoH1WuA2IQBhjmmovhd10sNmhFLBVcXwb3m+pQEPJ4TyQudGg10kpZXel8YxK/G7f/Y+rl4lF6MHgpCBh8aP/a+Osag3OXvIQrfJfBq1/F7g8+5tl5Z5+P55GkZCtfzTkYeymZVPfONf5NGFnwzImX4i+28dL+UxFg+1oSxEFpjpMVQ5L+QWlxuzT4o/tHMemeS0vJP14n3cfbIfoFnzb9NyD9/18h5mwWPZ3+eG5ylZQ7UZaNuoRMadAhIe7yDz6mX2D/tNp05cztED82r/zv6eGtjJYcv/cKIoYpme0ZVgs9Fbu3vFjuwV/T+cqAF5fmpZMMlKZvmJbWw8QLWvBQmvsrAa4b5t070aDCD7Scl1CbXSgZoQVu9POOX2gv63ccNPi3SchImZkuXlXcx6/xNuzXfHNxTJTddv7X7Lihp34ahj0iTVk/hEASTtP5oRli2HGoCFcXJKEWBQaP0zAc3NzdoPTVWE8DmSe8zDU9Jjg5FXAKXL6W6sYUAoVXJQTHnlQjA9T3PevTMAVjX1O8dZIhY7aXEvrzVR5bWwI443Y3JEQaTVBwsINAVKPD0VhvyfE4NKD7BvPhCLdmHc0h95DrQr277hP528tyjsqXziOrAChGRwTEK04=
+    secure: A3E5nymejjewTcrKUi6WciyIpi/2PrycAaIuhuETytcHJl4x2xQFJjb2nRnZ2uzIcPgjR4hx4Q2ov9AZEihEfcfbtYaPJHVHKOUj/wwBeaTEUY4KEFK1BneqJYD44ghui8t/CmwHEMNtQiQRFpNl3YWl9zVbBvwDIW/7af3+4bFnkydUhXeDyfyM4sYb8vFYbLqEaNePAe0hWndU/WNjZL9bTpTX9bqI4MFlsKqFzuaFjabvzqkCHNDTB7HabvAgbrEJdpYB5R+IC26U8F9H8dRB37YDf/9B7auJebB6xu/Y/RDqqeYv5a1tyqmT0JPaUxeom5+w0SqkS3pMHxr1PUiccwPkj57PnxVxau07FoX1i7J5Cmi5JfWZgw1olqIj9nglumE7rjK5hrsDcoR26naaZFxF/pNtuU3wAFr0M+Er+Quj7rpIY74ni2zYvYcWOwXA4lGgyyn6toQy6plUUSaJPrZCAU3gGPP0g9YUl4834bCO/jIa64/Ndg75wm/Vn1XvZ5bMBad1zFpjK0WwL8zTQnloEt+AQmCrRzxRFpQMBoV0225NTfccMzjCvdbTwSwmSKZ6cwOwAySTeGP0f/kmHaGRyG74/XCs8R0GkhAeOOMlTcsZ6ULEeHFxnV7LLmBnpgZRTJWApBf2Jw+dJFM0O9/NMTF089aWhok7TpQ=
   file: php7cc-analyser.phar
   on:
     repo: cwreden/php7cc-analyser
-    php: 7.1
-    tags: true
-    condition: "$COMPOSER_FLAGS = --prefer-lowest"
